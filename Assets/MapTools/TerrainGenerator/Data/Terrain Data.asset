@@ -13,15 +13,15 @@ MonoBehaviour:
   m_Name: Terrain Data
   m_EditorClassIdentifier: 
   autoUpdate: 1
-  uniformScale: 1
+  uniformScale: 5
   useFlatShading: 0
   useFalloffMap: 0
-  meshHeightMultiplier: 100
+  meshHeightMultiplier: 50
   meshHeightCurve:
     serializedVersion: 2
     m_Curve:
     - serializedVersion: 3
-      time: 0
+      time: 0.0010375977
       value: 0
       inSlope: 0
       outSlope: 0
@@ -30,35 +30,26 @@ MonoBehaviour:
       inWeight: 0
       outWeight: 0
     - serializedVersion: 3
-      time: 0.29681617
-      value: 0.13951935
-      inSlope: 1.1038363
-      outSlope: 1.1038363
+      time: 0.31208292
+      value: 0.1162119
+      inSlope: 0.8505014
+      outSlope: 0.8505014
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
-      time: 0.71057284
-      value: 0.29653665
-      inSlope: 0.96291786
-      outSlope: 0.96291786
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 0.9148894
-      value: 0.8662648
-      inSlope: 5.230856
-      outSlope: 5.230856
+      time: 0.9603876
+      value: 0.37018347
+      inSlope: 1.029712
+      outSlope: 1.029712
       tangentMode: 0
       weightedMode: 0
       inWeight: 0.33333334
       outWeight: 0.33333334
     - serializedVersion: 3
       time: 1
-      value: 1
+      value: 0.4
       inSlope: 2
       outSlope: 2
       tangentMode: 0
