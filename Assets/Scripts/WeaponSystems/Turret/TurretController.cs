@@ -14,6 +14,8 @@ public class TurretController : MonoBehaviour
 
     public float angleToTarget;
 
+    public FiringSolutionData firingSolutionData = new FiringSolutionData();
+
     private void Start()
     {
         firingSolution = transform.GetComponent<FiringSolution>();
@@ -21,18 +23,26 @@ public class TurretController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (firingSolution.targetActive) {
-            Quaternion lookRotation = Quaternion.LookRotation(weaponRotation);
+        if (firingSolutionData.GetValid()) {
+            Quaternion lookRotation = Quaternion.LookRotation(firingSolutionData.GetRotation());
             Vector3 rotation = lookRotation.eulerAngles;
             GunRotateTowards(rotation);
             this.angleToTarget = Quaternion.Angle(verticalRotator.rotation, lookRotation);
+
         }
+    }
+
+    public void SubmitFiringSolution(FiringSolutionData firingSolutionData) 
+    {
+        this.firingSolutionData = firingSolutionData;
     }
 
     private void GunRotateTowards(Vector3 rotation) {
         // Requires conversion to Local Rotation
-        horizontalRotator.rotation = Quaternion.RotateTowards(horizontalRotator.rotation, Quaternion.Euler(new Vector3(0, rotation.y, 0)), rotationSpeed * Time.fixedDeltaTime);
-        verticalRotator.rotation = Quaternion.RotateTowards(verticalRotator.rotation, Quaternion.Euler(new Vector3(rotation.x, rotation.y, rotation.z)), rotationSpeed / 1.5f * Time.fixedDeltaTime);
+        if (rotation == Vector3.zero)
+            return;
+        horizontalRotator.localRotation = Quaternion.RotateTowards(horizontalRotator.localRotation, Quaternion.Euler(new Vector3(0, rotation.y, 0)), rotationSpeed * Time.fixedDeltaTime);
+        verticalRotator.localRotation = Quaternion.RotateTowards(verticalRotator.localRotation, Quaternion.Euler(new Vector3(rotation.x, 0, rotation.z)), rotationSpeed / 1.5f * Time.fixedDeltaTime);
     }
 
     public void setWeaponRotation(Vector3 weaponDirection) {
@@ -41,7 +51,7 @@ public class TurretController : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        Vector3 turretCenter = transform.position + verticalRotator.localPosition;
+        Vector3 turretCenter = transform.position + (verticalRotator.position - transform.position);
         Gizmos.color = Color.blue;
         Gizmos.DrawLine(turretCenter, turretCenter + (weaponRotation.normalized * 100f));
 

@@ -19,6 +19,6 @@ public class SearchRadar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        firingSolution.submitTargetData(target.position, target.GetComponent<Rigidbody>().velocity.normalized, target.GetComponent<Rigidbody>().velocity.magnitude);
+        firingSolution.SubmitTargetData(target.position, target.GetComponent<Rigidbody>().velocity.normalized, target.GetComponent<Rigidbody>().velocity.magnitude);
     }
 }

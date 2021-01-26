@@ -21,6 +21,7 @@ public class MissleBehaviour : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb.AddForce(transform.forward * thrust);
+        rb.velocity = transform.forward * thrust;
+        //rb.AddForce(transform.forward * thrust);
     }
 }

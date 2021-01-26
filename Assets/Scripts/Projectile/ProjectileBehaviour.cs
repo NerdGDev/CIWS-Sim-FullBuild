@@ -12,16 +12,16 @@ public class ProjectileBehaviour : MonoBehaviour
         transform.parent = GameObject.Find("ProjectileParent").transform;
     }
 
-    public void Setup(Vector3 projectileDirection)
+    public void Setup(Vector3 projectileDirection, float ttt)
     {
         this.projectileDirection = projectileDirection;
-        Destroy(gameObject, 3f);
+        Destroy(gameObject, 0.7f);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position += projectileDirection * Time.fixedDeltaTime * 100f;
+        transform.position += projectileDirection * Time.fixedDeltaTime * 1100f;
     }
 
     private void OnDrawGizmos()

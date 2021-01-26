@@ -28,11 +28,11 @@ public class CannonController : MonoBehaviour
         
     }
 
-    public void Fire() 
+    public void Fire(FiringSolutionData firingSolutionData) 
     {
         if (lastShot <= Time.time + firerate) {
             Transform bullet = Instantiate(projectile, turretController.verticalRotator.position, turretController.verticalRotator.rotation);
-            bullet.GetComponent<ProjectileBehaviour>().Setup((Quaternion.LookRotation(GetPointOnUnitSphereCap(turretController.verticalRotator.rotation, barrelAccuracy)) * Vector3.forward) * 100f);
+            bullet.GetComponent<ProjectileBehaviour>().Setup((Quaternion.LookRotation(GetPointOnUnitSphereCap(turretController.verticalRotator.rotation, barrelAccuracy)) * Vector3.forward) * 100f, firingSolutionData.GetTimeToTarget()); ;
             lastShot = Time.time;
             
         }
@@ -40,7 +40,7 @@ public class CannonController : MonoBehaviour
 
     public static Vector3 GetPointOnUnitSphereCap(Quaternion targetDirection, float angle)
     {
-        var angleInRad = Random.Range(0.0f, angle) * Mathf.Deg2Rad;
+        var angleInRad = Random.Range(0.1f, angle) * Mathf.Deg2Rad;
         var PointOnCircle = (Random.insideUnitCircle.normalized) * Mathf.Sin(angleInRad);
         var V = new Vector3(PointOnCircle.x, PointOnCircle.y, Mathf.Cos(angleInRad));
         return targetDirection * V;
