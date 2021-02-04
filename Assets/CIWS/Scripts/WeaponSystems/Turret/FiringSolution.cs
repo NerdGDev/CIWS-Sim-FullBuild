@@ -149,7 +149,7 @@ public class FiringSolutionData
 {
     Vector3 rotationToTarget;
     float timeToTarget;
-    bool valid;
+    bool valid = false;
 
     public FiringSolutionData(Vector3 rotationToTarget, float timeToTarget) 
     {

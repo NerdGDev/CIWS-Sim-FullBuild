@@ -23,7 +23,7 @@ public class TurretController : MonoBehaviour
 
     void FixedUpdate()
     {
-        if (firingSolutionData.GetValid()) {
+        if (firingSolutionData.GetValid() && firingSolutionData != null) {
             Quaternion lookRotation = Quaternion.LookRotation(firingSolutionData.GetRotation());
             Vector3 rotation = lookRotation.eulerAngles;
             GunRotateTowards(rotation);

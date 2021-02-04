@@ -12,7 +12,7 @@ public class CannonController : MonoBehaviour
 
     private float barrelAccuracy = 0f;
 
-    public float firerate = 1f / 75f;
+    public float firerate = 1f / (60f / 1000f);
     public float lastShot = 0f;
 
     // Start is called before the first frame update
@@ -30,7 +30,12 @@ public class CannonController : MonoBehaviour
 
     public void Fire(FiringSolutionData firingSolutionData) 
     {
-        if (lastShot <= Time.time + firerate) {
+        Debug.Log("VibeCheck");
+        Debug.Log(lastShot + firerate);
+        Debug.Log(Time.time);
+        if (lastShot + firerate <= Time.time) 
+        {
+            Debug.Log("Fire");
             Transform bullet = Instantiate(projectile, turretController.verticalRotator.position, turretController.verticalRotator.rotation);
             bullet.GetComponent<ProjectileBehaviour>().Setup((Quaternion.LookRotation(GetPointOnUnitSphereCap(turretController.verticalRotator.rotation, barrelAccuracy)) * Vector3.forward) * 100f, firingSolutionData.GetTimeToTarget()); ;
             lastShot = Time.time;

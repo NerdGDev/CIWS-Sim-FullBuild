@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ProjectileBehaviour : MonoBehaviour
 {
-
+    public GameObject explosion;
     private Vector3 projectileDirection;
 
     private void Start()
@@ -14,14 +14,15 @@ public class ProjectileBehaviour : MonoBehaviour
 
     public void Setup(Vector3 projectileDirection, float ttt)
     {
+        Debug.Log(ttt);
         this.projectileDirection = projectileDirection;
-        Destroy(gameObject, 0.7f);
+        Destroy(gameObject, 2f);
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        transform.position += projectileDirection * Time.fixedDeltaTime * 1100f;
+        transform.position += projectileDirection * Time.fixedDeltaTime * 630f;
     }
 
     private void OnDrawGizmos()
@@ -32,6 +33,6 @@ public class ProjectileBehaviour : MonoBehaviour
 
     private void OnDestroy()
     {
-
+        //Destroy(Instantiate(explosion, transform.position, transform.rotation), 1f);
     }
 }
