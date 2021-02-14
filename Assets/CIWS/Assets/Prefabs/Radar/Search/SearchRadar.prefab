@@ -169,6 +169,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2782066640796129420}
   - component: {fileID: 3989252335485572570}
+  - component: {fileID: 771608348317236651}
   - component: {fileID: 5599769182622044763}
   m_Layer: 0
   m_Name: SearchRadar
@@ -214,6 +215,22 @@ MonoBehaviour:
   width: 15000
   height: 20000
   elevation: -15
+  visualPrefab: {fileID: 0}
+--- !u!114 &771608348317236651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2349695157340619164}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbd29f753cb380642aead3983072d879, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  connectedDataLinks: []
+  dataLinkVisualiser: {fileID: 6188320542539913344, guid: 3cda077f334ccf743a988391d3b10b30,
+    type: 3}
 --- !u!114 &5599769182622044763
 MonoBehaviour:
   m_ObjectHideFlags: 0

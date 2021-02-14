@@ -23,43 +23,52 @@ public class CommandController : MonoBehaviour
     {
         targetDictionary = new Dictionary<int, Vector3>();
         targetAssignmentsDictionary = new Dictionary<int, TargetAssignment>();
+
+        CIWSDataLink dataLink = GetComponent<CIWSDataLink>();
+        dataLink.receivedData += ReceivedData;
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (var item in targetDictionary) {
-            if (!targetAssignmentsDictionary.ContainsKey(item.Key))
-            {
-                foreach (TrackingRadarController trackingRadar in TrackingRadars) {
-                    if (!trackingRadar.isAssigned)
-                    {
-                        if (trackingRadar.bounded == null)
-                        {
-                            foreach (WeaponSystemController weaponSystem in WeaponSystems)
-                            {
-                                if (weaponSystem.bounded == null) {
-                                    TargetAssignment ta = new TargetAssignment(item.Key, item.Value, trackingRadar, weaponSystem);
-                                    ta.AssignTarget(true);
-                                    Debug.Log("Assigned Target");
-                                    targetAssignmentsDictionary.Add(item.Key, ta);
 
-                                }
-                            }
-                        }
-                        else
-                        { 
+
+        /*foreach (var item in targetDictionary) {
+        //    if (!targetAssignmentsDictionary.ContainsKey(item.Key))
+        //    {
+        //        foreach (TrackingRadarController trackingRadar in TrackingRadars) {
+        //            if (!trackingRadar.isAssigned)
+        //            {
+        //                if (trackingRadar.bounded == null)
+        //                {
+        //                    foreach (WeaponSystemController weaponSystem in WeaponSystems)
+        //                    {
+        //                        if (weaponSystem.bounded == null) {
+        //                            TargetAssignment ta = new TargetAssignment(item.Key, item.Value, trackingRadar, weaponSystem);
+        //                            ta.AssignTarget(true);
+        //                            Debug.Log("Assigned Target");
+        //                            targetAssignmentsDictionary.Add(item.Key, ta);
+        //                        }
+        //                    }
+        //                }
+        //                else
+        //                { 
                             
-                        }
+        //                }
 
-                    }
+        //            }
                     
                     
-                }
+        //        }
 
                 
-            }
-        }
+        //    }
+        //}*/
+    }
+
+    public void ReceivedData(CIWSDataLinkPackage dataLinkPackage) 
+    {
+        Debug.Log(dataLinkPackage.GetType().ToString()); ;
     }
 
     public void ConnectWeaponSystem(WeaponSystemController weaponSystemController) 
@@ -85,33 +94,11 @@ public class CommandController : MonoBehaviour
     public void ConnectSearchRadar(SearchRadarController searchRadarController)
     {
         SearchRadars.Add(searchRadarController);
-        searchRadarController.radarToneSignal += RadarTone;
     }
 
     public void DisonnectSearchRadar(SearchRadarController searchRadarController)
     {
         SearchRadars.Remove(searchRadarController);
-        searchRadarController.radarToneSignal -= RadarTone;
-    }
-
-    public void RadarTone(int radarID, GameObject radarObject, int signatureID, Vector3 position) {
-        Debug.Log("Tone Recieved");
-        Debug.DrawLine(transform.position, radarObject.transform.position, Color.red);
-        if (!targetDictionary.ContainsKey(signatureID))
-        {
-            targetDictionary.Add(signatureID, position);
-        }
-        else 
-        {
-            targetDictionary[signatureID] = position;
-        }
-        
-
-
-    }
-
-    public void ConfirmDeath(int signatureID) {
-    
     }
 
     public void UpdateIDPosition() {

@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class SearchRadarController : MonoBehaviour
 {
-    public delegate void RadarTone(int radarID, GameObject radarObject, int signatureID, Vector3 position);
-    public RadarTone radarToneSignal;
-
     bool isBusy;
+
     public CommandController commandController;
+
+    CIWSDataLink dataLink;
 
     ConstantMotion motionComponent;
 
@@ -42,6 +42,9 @@ public class SearchRadarController : MonoBehaviour
         dmh.detectionStayDelegate += DetecionStay;
         dmh.detectionExitDelegate += DetectionExit;
 
+        dataLink = GetComponent<CIWSDataLink>();
+
+        dataLink.receivedData += ReceivedData;
 
         commandController.ConnectSearchRadar(this);
     }
@@ -58,6 +61,11 @@ public class SearchRadarController : MonoBehaviour
 
     }
 
+    public void ReceivedData(CIWSDataLinkPackage dataLinkPackage) 
+    {
+    
+    }
+
     public void SubmitDetection(Transform target)
     {
         
@@ -67,23 +75,28 @@ public class SearchRadarController : MonoBehaviour
     {
         //Debug.DrawLine(transform.position, position, Color.red);
         
-        GameObject visualiser = Instantiate(visualPrefab);
+        GameObject visualiser = Instantiate(visualPrefab, transform.position, transform.rotation);
         visualiser.GetComponent<RadarBounceVisualiser>().origin = radarBeamShape.position;
         visualiser.GetComponent<RadarBounceVisualiser>().target = position;
         //visualiser.GetComponent<RadarBounceVisualiser>().step = Vector3.Distance(transform.position, position) * (Time.fixedDeltaTime * 2 * 4f);
-
+        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
+        dataLink.TransmitDataLink(package);
         //radarToneSignal(GetInstanceID(), signatureID, position);
     }
 
     public void DetecionStay(int signatureID, Vector3 position)
     {
-        //Debug.DrawLine(transform.position, position, Color.blue);
+        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
+        dataLink.TransmitDataLink(package);
 
-        radarToneSignal(GetInstanceID(), gameObject, signatureID, position);
+        //Debug.DrawLine(transform.position, position, Color.blue);
     }
 
     public void DetectionExit(int signatureID, Vector3 position)
     {
+        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
+        dataLink.TransmitDataLink(package);
+
         //Debug.DrawLine(transform.position, position, Color.green);
 
         //radarToneSignal(GetInstanceID(), signatureID, position);

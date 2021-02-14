@@ -13,7 +13,7 @@ public class RadarBounceVisualiser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        step = 3000f;
+        step = 10f;
     }
 
     // Update is called once per frame
