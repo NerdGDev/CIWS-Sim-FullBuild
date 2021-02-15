@@ -9,16 +9,16 @@ public class WeaponSystemController : MonoBehaviour
 
     public TrackingRadarController bounded;
 
-    public CommandController commandController;
+    //public CommandController commandController;
 
-    TargetAssignment targetAssignment;
+    //TargetAssignment targetAssignment;
 
 
     // Start is called before the first frame update
     void Start()
     {
-        if (commandController)
-            commandController.ConnectWeaponSystem(this);
+        //if (commandController)
+        //    commandController.ConnectWeaponSystem(this);
 
 
     }
@@ -34,8 +34,8 @@ public class WeaponSystemController : MonoBehaviour
         
     }
 
-    public void AssignTarget(TargetAssignment targetAssignment)
-    {
-        this.targetAssignment = targetAssignment;
-    }
+    //public void AssignTarget(TargetAssignment targetAssignment)
+    //{
+    //    this.targetAssignment = targetAssignment;
+    //}
 }

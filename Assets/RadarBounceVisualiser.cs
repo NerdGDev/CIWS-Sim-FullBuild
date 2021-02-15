@@ -4,36 +4,44 @@ using UnityEngine;
 
 public class RadarBounceVisualiser : MonoBehaviour
 {
-    public Vector3 origin;
-    public Vector3 target;
+    public Transform origin;
+    public Transform target;
     public float step;
 
     bool bounced = false;
     bool skipStarTick = true;
+
+    TrailRenderer tr;
     // Start is called before the first frame update
     void Start()
     {
         step = 10f;
+        tr = GetComponentInChildren<TrailRenderer>();
+        tr.startWidth = 5f;
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
+        //Skips first tick for corrected rendering from origin
         if (skipStarTick) {
             skipStarTick = false;
+            step = Vector3.Distance(origin.position, target.position) * (Time.fixedDeltaTime * 25f);
             return;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, target, step);
-        if (Vector3.Distance(transform.position, target) < 1f && !bounced)
+        transform.position = Vector3.MoveTowards(transform.position, target.position, step);
+        tr.startWidth += step * Time.fixedDeltaTime;
+        if (Vector3.Distance(transform.position, target.position) < 1f && !bounced)
         {
-            Debug.Log("Bounced");
+            //Debug.Log("Bounced");
+            tr.startWidth = 5f;
             // Swap the position of the cylinder.
             this.target = this.origin;
             bounced = true;
         }
 
-        if (Vector3.Distance(transform.position, target) < 1f && bounced)
+        if (Vector3.Distance(transform.position, target.position) < 1f && bounced)
         {
             Destroy(gameObject,1f);
         }

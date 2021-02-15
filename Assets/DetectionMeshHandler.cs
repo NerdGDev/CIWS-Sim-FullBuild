@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class DetectionMeshHandler : MonoBehaviour
 {
+    public GameObject visualPrefab;
+
     public delegate void DetectionEnter(int signatureID, Vector3 position);
     public DetectionEnter detectionEnterDelegate;
 
@@ -15,6 +17,10 @@ public class DetectionMeshHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+        GameObject visualiser = Instantiate(visualPrefab, transform.position, transform.rotation);
+        visualiser.GetComponent<RadarBounceVisualiser>().origin = transform;
+        visualiser.GetComponent<RadarBounceVisualiser>().target = other.transform;
         detectionEnterDelegate(other.transform.GetInstanceID(), other.transform.position);
     }
 

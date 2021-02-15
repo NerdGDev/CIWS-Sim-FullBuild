@@ -11,7 +11,7 @@ public class TrackingRadarController : MonoBehaviour
 
     public CommandController commandController;
 
-    TargetAssignment targetAssignment;
+    //TargetAssignment targetAssignment;
     
 
     // Start is called before the first frame update
@@ -26,9 +26,9 @@ public class TrackingRadarController : MonoBehaviour
         
     }
 
-    public void AssignTarget(TargetAssignment targetAssignment) {
-        this.targetAssignment = targetAssignment;
-    }
+    //public void AssignTarget(TargetAssignment targetAssignment) {
+    //    this.targetAssignment = targetAssignment;
+    //}
 
 
 

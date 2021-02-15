@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DLPackageDetection : CIWSDataLinkPackage
+public class DLPDetection : CIWSDataLinkPackage
 {
     int radarID;
     SearchRadarController sendingController;
@@ -10,7 +10,7 @@ public class DLPackageDetection : CIWSDataLinkPackage
     int signatureID;
     Vector3 position;
 
-    public DLPackageDetection(int radarID, SearchRadarController sendingController, int signatureID, Vector3 position) : base(PackageContent.DETECTION)
+    public DLPDetection(int radarID, SearchRadarController sendingController, int signatureID, Vector3 position) : base(PackageContent.DETECTION)
     {
         this.radarID = radarID;
         this.sendingController = sendingController;
@@ -19,7 +19,7 @@ public class DLPackageDetection : CIWSDataLinkPackage
         this.position = position;
     }
 
-    public (int radarId, SearchRadarController sendingController, int signatureID, Vector3 position) getPackageData(){
+    public (int radarID, SearchRadarController sendingController, int signatureID, Vector3 position) GetPackageData(){
         return (radarID, sendingController, signatureID, position);
     }
 }

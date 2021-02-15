@@ -5,8 +5,8 @@ using UnityEngine;
 public enum PackageContent{
     BASIC,
     DETECTION,
-    TRACKING,
-    INSTRUCTION
+    COMMAND,
+    STATUS
 }
 
 public class CIWSDataLinkPackage {
@@ -21,7 +21,7 @@ public class CIWSDataLinkPackage {
         this.type = type;
     }
 
-    public PackageContent GetType() {
+    public PackageContent GetPackageContentType() {
         return this.type;
     }
 

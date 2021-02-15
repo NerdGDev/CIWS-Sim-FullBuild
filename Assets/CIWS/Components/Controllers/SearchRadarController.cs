@@ -23,7 +23,7 @@ public class SearchRadarController : MonoBehaviour
     public float height;
     public float elevation;
 
-    public GameObject visualPrefab;
+    
 
     private void OnValidate()
     {
@@ -75,27 +75,25 @@ public class SearchRadarController : MonoBehaviour
     {
         //Debug.DrawLine(transform.position, position, Color.red);
         
-        GameObject visualiser = Instantiate(visualPrefab, transform.position, transform.rotation);
-        visualiser.GetComponent<RadarBounceVisualiser>().origin = radarBeamShape.position;
-        visualiser.GetComponent<RadarBounceVisualiser>().target = position;
+        
         //visualiser.GetComponent<RadarBounceVisualiser>().step = Vector3.Distance(transform.position, position) * (Time.fixedDeltaTime * 2 * 4f);
-        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
+        CIWSDataLinkPackage package = new DLPDetection(GetInstanceID(), this, signatureID, position);
         dataLink.TransmitDataLink(package);
         //radarToneSignal(GetInstanceID(), signatureID, position);
     }
 
     public void DetecionStay(int signatureID, Vector3 position)
     {
-        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
-        dataLink.TransmitDataLink(package);
+        CIWSDataLinkPackage package = new DLPDetection(GetInstanceID(), this, signatureID, position);
+        //dataLink.TransmitDataLink(package);
 
         //Debug.DrawLine(transform.position, position, Color.blue);
     }
 
     public void DetectionExit(int signatureID, Vector3 position)
     {
-        CIWSDataLinkPackage package = new DLPackageDetection(GetInstanceID(), this, signatureID, position);
-        dataLink.TransmitDataLink(package);
+        CIWSDataLinkPackage package = new DLPDetection(GetInstanceID(), this, signatureID, position);
+        //dataLink.TransmitDataLink(package);
 
         //Debug.DrawLine(transform.position, position, Color.green);
 
