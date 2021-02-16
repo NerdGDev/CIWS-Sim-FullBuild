@@ -7,6 +7,12 @@ using UnityEngine;
 public class FireControlSystem : MonoBehaviour
 {
     public Status status;
+    public Commands command;
+
+    public int targetSignature;
+    public Vector3 targetPosition;
+
+    public Commands waitingCommand;
 
     public CommandController cc;
 
@@ -14,12 +20,7 @@ public class FireControlSystem : MonoBehaviour
 
     public WeaponSystemController wsc;
 
-    public CIWSDataLink dl;
-
-    public int targetSignature;
-    public Vector3 targetPosition;
-
-    
+    public CIWSDataLink dl;   
 
     // Start is called before the first frame update
     void Start()
@@ -33,7 +34,25 @@ public class FireControlSystem : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        switch (this.command) {
+            case Commands.RESET:
+                break;
+            case Commands.DISENGAGE:
+                break;
+            case Commands.TRACK:
+                break;
+            case Commands.ENGAGE:
+                EngageTarget();
+                break;
+            default:
+                break;
+        }
+    }
+
+    void EngageTarget() 
+    {
+        //Debug.Log("Engage");
+        trc.LookForTarget(targetSignature, targetPosition);
     }
 
     void ReceivedData(CIWSDataLinkPackage dataLinkPackage)
@@ -49,6 +68,28 @@ public class FireControlSystem : MonoBehaviour
         FireControlSystem.Commands command = data.command;
         Vector3 targetPosition = data.position;
         int signatureID = data.signatureID;
+
+        targetSignature = signatureID;
+        this.targetPosition = targetPosition;
+
+        this.command = command;
+
+        switch (command) {
+            case Commands.RESET:
+                status = Status.IDLE;
+                break;
+            case Commands.DISENGAGE:
+                status = Status.WORKING;
+                break;
+            case Commands.TRACK:
+                status = Status.WORKING;
+                break;
+            case Commands.ENGAGE:
+                status = Status.WORKING;
+                break;
+            default:
+                break;
+        }
     }
 
     public void ChangeStatus(FireControlSystem.Status status) 

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DetectionMeshHandler : MonoBehaviour
+public class TrackingDetectionMeshHandler : MonoBehaviour
 {
     public GameObject visualPrefab;
 
@@ -17,20 +17,27 @@ public class DetectionMeshHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
-        GameObject visualiser = Instantiate(visualPrefab, transform.position, transform.rotation);
-        visualiser.GetComponent<RadarBounceVisualiser>().origin = transform;
-        visualiser.GetComponent<RadarBounceVisualiser>().target = other.transform;
-        detectionEnterDelegate(other.transform.GetInstanceID(), other.transform.position);
+        if (detectionEnterDelegate != null)
+        {
+            detectionEnterDelegate(other.transform.GetInstanceID(), other.transform.position);
+        }
     }
 
     private void OnTriggerStay(Collider other)
     {
-        detectionStayDelegate(other.transform.GetInstanceID(), other.transform.position);
+        if (detectionStayDelegate != null)
+        {
+            detectionStayDelegate(other.transform.GetInstanceID(), other.transform.position);
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        detectionExitDelegate(other.transform.GetInstanceID(), other.transform.position);
+        if (detectionExitDelegate != null)
+        {
+            detectionExitDelegate(other.transform.GetInstanceID(), other.transform.position);
+        }
     }
 }
+

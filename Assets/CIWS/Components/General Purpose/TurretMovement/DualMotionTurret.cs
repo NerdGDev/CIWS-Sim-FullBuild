@@ -25,12 +25,12 @@ public class DualMotionTurret : TurretMotionBase
         float rotOneY = motionOneRotationY ? rotation.y : 0;
         float rotOneZ = motionOneRotationZ ? rotation.z : 0;
         Vector3 rotOne = new Vector3(rotOneX, rotOneY, rotOneZ);
-        motionOneTranform.localRotation = Quaternion.RotateTowards(motionOneTranform.localRotation, Quaternion.Euler(rotOne), (Mathf.Deg2Rad * motionOneSpeed) * Time.fixedDeltaTime);
+        motionOneTranform.localRotation = Quaternion.RotateTowards(motionOneTranform.localRotation, Quaternion.Euler(rotOne), motionOneSpeed * Time.fixedDeltaTime);
 
         float rotTwoX = motionTwoRotationX ? rotation.x : 0;
         float rotTwoY = motionTwoRotationY ? rotation.y : 0;
         float rotTwoZ = motionTwoRotationZ ? rotation.z : 0;
         Vector3 rotTwo = new Vector3(rotTwoX, rotTwoY, rotTwoZ);
-        motionTwoTranform.localRotation = Quaternion.RotateTowards(motionTwoTranform.localRotation, Quaternion.Euler(rotTwo), (Mathf.Deg2Rad * motionTwoSpeed) * Time.fixedDeltaTime);
+        motionTwoTranform.localRotation = Quaternion.RotateTowards(motionTwoTranform.localRotation, Quaternion.Euler(rotTwo), motionTwoSpeed * Time.fixedDeltaTime);
     }
 }

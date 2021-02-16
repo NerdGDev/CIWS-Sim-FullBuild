@@ -11,18 +11,21 @@ public class CommandController : MonoBehaviour
     List<FireControlSystem> FireControlSystems;
 
     Dictionary<int, Vector3> targetDictionary;
-    //Dictionary<int, TargetAssignment> targetAssignmentsDictionary;
+    Dictionary<int, FireControlSystem> targetAssignment;
 
+    //Dictionary<int, TargetAssignment> targetAssignmentsDictionary;
+    CIWSDataLink dl;
     
 
     // Start is called before the first frame update
     void Start()
     {
         targetDictionary = new Dictionary<int, Vector3>();
+        targetAssignment = new Dictionary<int, FireControlSystem>();
         //targetAssignmentsDictionary = new Dictionary<int, TargetAssignment>();
 
-        CIWSDataLink dataLink = GetComponent<CIWSDataLink>();
-        dataLink.receivedData += ReceivedData;
+        dl = GetComponent<CIWSDataLink>();
+        dl.receivedData += ReceivedData;
 
         StartCoroutine(ComputeCycle());
     }
@@ -33,7 +36,7 @@ public class CommandController : MonoBehaviour
         {
             // Debug
             Debug.Log("Compute Tick");
-
+            UpdateTargetAssignments();
 
 
 
@@ -51,13 +54,48 @@ public class CommandController : MonoBehaviour
     {
         foreach (var item in targetDictionary)
         {
-            
+            if (!targetAssignment.ContainsKey(item.Key)) {
+                FireControlSystem optimalFCS = null;
+
+                FireControlSystems.ForEach(delegate (FireControlSystem fcs)
+                {
+                    if (fcs.status == FireControlSystem.Status.IDLE) 
+                    {
+                        if (optimalFCS != null)
+                        {
+                            float d = Vector3.Distance(fcs.transform.position, item.Value);
+                            if (d < Vector3.Distance(optimalFCS.transform.position, item.Value)) 
+                            {
+                                Debug.Log("New Optimal");
+                                optimalFCS = fcs;
+                            }
+
+                        }
+                        else 
+                        {
+                            optimalFCS = fcs;
+                        }
+                        
+
+                    }
+                });
+                if (optimalFCS != null) {
+                    SendTargetAssignment(optimalFCS, item.Key, item.Value);
+                }
+            }
         }
     }
 
 
-        // Update is called once per frame
-        void Update()
+    void SendTargetAssignment(FireControlSystem fcs, int signatureID, Vector3 position) 
+    {
+        Debug.Log("Send Target Assignment");
+        DLPCommand package = new DLPCommand(FireControlSystem.Commands.ENGAGE, position, signatureID);
+        dl.transmitData(package, fcs.gameObject.GetInstanceID());
+    }
+
+    // Update is called once per frame
+    void Update()
     {
 
 

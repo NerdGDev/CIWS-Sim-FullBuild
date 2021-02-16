@@ -67,7 +67,8 @@ public class CIWSDataLink : MonoBehaviour
 
     //Handles all Received Data Packages from Other DataLinks
     private void ReceiveDataLink(CIWSDataLinkPackage dataLinkPackage, ConfirmReceivedDL callback, CIWSDataLink sender, int? target = null) {
-        if (target == null || target == GetInstanceID()) {
+        Debug.Log(target.ToString() + " : " + GetInstanceID().ToString() + " : " + gameObject.GetInstanceID().ToString());
+        if (target == null || target == gameObject.GetInstanceID()) {
             //Debug.Log("Received Data at " + GetInstanceID().ToString());
             receivedData(dataLinkPackage);
             callback(this);
