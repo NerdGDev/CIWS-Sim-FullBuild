@@ -33,4 +33,9 @@ public class DualMotionTurret : TurretMotionBase
         Vector3 rotTwo = new Vector3(rotTwoX, rotTwoY, rotTwoZ);
         motionTwoTranform.localRotation = Quaternion.RotateTowards(motionTwoTranform.localRotation, Quaternion.Euler(rotTwo), motionTwoSpeed * Time.fixedDeltaTime);
     }
+
+    public override Quaternion GetRotation()
+    {
+        return motionOneTranform.localRotation * motionTwoTranform.localRotation;
+    }
 }

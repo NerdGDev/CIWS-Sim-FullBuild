@@ -80,6 +80,7 @@ public class CommandController : MonoBehaviour
                     }
                 });
                 if (optimalFCS != null) {
+                    targetAssignment.Add(item.Key, optimalFCS);
                     SendTargetAssignment(optimalFCS, item.Key, item.Value);
                 }
             }

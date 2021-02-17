@@ -17,7 +17,7 @@ public class RadarBounceVisualiser : MonoBehaviour
     {
         step = 10f;
         tr = GetComponentInChildren<TrailRenderer>();
-        tr.startWidth = 5f;
+        tr.startWidth = 1f;
     }
 
     // Update is called once per frame
@@ -31,11 +31,11 @@ public class RadarBounceVisualiser : MonoBehaviour
         }
 
         transform.position = Vector3.MoveTowards(transform.position, target.position, step);
-        tr.startWidth += step * Time.fixedDeltaTime;
+        tr.startWidth += 1.5f * Time.fixedDeltaTime;
         if (Vector3.Distance(transform.position, target.position) < 1f && !bounced)
         {
             //Debug.Log("Bounced");
-            tr.startWidth = 5f;
+            tr.startWidth = 1f;
             // Swap the position of the cylinder.
             this.target = this.origin;
             bounced = true;

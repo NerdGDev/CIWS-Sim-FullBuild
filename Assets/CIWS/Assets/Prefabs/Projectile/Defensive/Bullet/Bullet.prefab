@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3861286139687619752}
   - component: {fileID: 1739880369823576077}
   - component: {fileID: 7407281638405090842}
+  - component: {fileID: 4643398589437457343}
   m_Layer: 0
   m_Name: Bullet
   m_TagString: Untagged
@@ -94,6 +95,19 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4643398589437457343
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1546914725576990245}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a49107e5c63c0c442b9561417e7e81ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  explosion: {fileID: 0}
 --- !u!1 &7806396962949917336
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,10 +179,10 @@ TrailRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Time: 5
+  m_Time: 0.5
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 10
+    widthMultiplier: 1
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -187,7 +201,7 @@ TrailRenderer:
     colorGradient:
       serializedVersion: 2
       key0: {r: 1, g: 0.63090706, b: 0, a: 1}
-      key1: {r: 1, g: 0.9860897, b: 0, a: 0.39607844}
+      key1: {r: 1, g: 0.9860897, b: 0, a: 0}
       key2: {r: 0, g: 0, b: 0, a: 0}
       key3: {r: 0, g: 0, b: 0, a: 0}
       key4: {r: 0, g: 0, b: 0, a: 0}

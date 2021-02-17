@@ -49,4 +49,9 @@ public class TurretMotionBase : MonoBehaviour
     {
 
     }
+
+    virtual public Quaternion GetRotation()    
+    {
+        return new Quaternion();
+    }
 }

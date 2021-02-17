@@ -76,13 +76,14 @@ public class TrackingRadarController : MonoBehaviour
         //Debug.Log(targetSig.ToString());
         if (signatureID == targetSig) 
         {
-            Debug.Log("Found");
+            //Debug.Log("Found");
             targetFound = true;
             targetPos = position;
             Vector3[] tempArr = new Vector3[75 * 4];
             System.Array.ConstrainedCopy(movementTracking, 1, tempArr, 0, (75 * 4) - 1);
             movementTracking = tempArr;
             movementTracking[movementTracking.GetUpperBound(0)] = position;
+            //Debug.Log(string.Join(",", movementTracking));
         }
     }
 
