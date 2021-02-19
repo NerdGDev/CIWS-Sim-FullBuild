@@ -74,7 +74,7 @@ TrailRenderer:
   m_Time: 0.1
   m_Parameters:
     serializedVersion: 3
-    widthMultiplier: 5
+    widthMultiplier: 24
     widthCurve:
       serializedVersion: 2
       m_Curve:
@@ -172,6 +172,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a404a03c44862e49943f5346caffdda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  origin: {x: 0, y: 0, z: 0}
-  target: {x: 0, y: 0, z: 0}
+  origin: {fileID: 0}
+  target: {fileID: 0}
   step: 0

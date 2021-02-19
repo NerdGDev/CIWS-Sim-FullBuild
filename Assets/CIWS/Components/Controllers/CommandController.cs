@@ -5,10 +5,10 @@ using UnityEngine;
 public class CommandController : MonoBehaviour
 {
     [SerializeField]
-    List<SearchRadarController> SearchRadars;
+    public List<SearchRadarController> SearchRadars;
 
     [SerializeField]
-    List<FireControlSystem> FireControlSystems;
+    public List<FireControlSystem> FireControlSystems;
 
     Dictionary<int, Vector3> targetDictionary;
     Dictionary<int, FireControlSystem> targetAssignment;

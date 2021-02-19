@@ -5,84 +5,103 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    /*
-  Writen by Windexglow 11-13-10.  Use it, edit it, steal it I don't care.  
-  Converted to C# 27-02-13 - no credit wanted.
-  Simple flycam I made, since I couldn't find any others made public.  
-  Made simple to use (drag and drop, done) for regular keyboard layout  
-  wasd : basic movement
-  shift : Makes camera accelerate
-  space : Moves camera on X and Z axis only.  So camera doesn't gain any height*/
+    public Transform target;
+    public Vector3 targetOffset;
+    public float distance = 5.0f;
+    public float maxDistance = 20;
+    public float minDistance = .6f;
+    public float xSpeed = 200.0f;
+    public float ySpeed = 200.0f;
+    public int yMinLimit = -80;
+    public int yMaxLimit = 80;
+    public int zoomRate = 40;
+    public float panSpeed = 0.3f;
+    public float zoomDampening = 5.0f;
 
+    private float xDeg = 0.0f;
+    private float yDeg = 0.0f;
+    private float currentDistance;
+    private float desiredDistance;
+    private Quaternion currentRotation;
+    private Quaternion desiredRotation;
+    private Quaternion rotation;
+    private Vector3 position;
 
-    float mainSpeed = 100.0f; //regular speed
-    float shiftAdd = 250.0f; //multiplied by how long shift is held.  Basically running
-    float maxShift = 1000.0f; //Maximum speed when holdin gshift
-    float camSens = 0.25f; //How sensitive it with mouse
-    private Vector3 lastMouse = new Vector3(255, 255, 255); //kind of in the middle of the screen, rather than at the top (play)
-    private float totalRun = 1.0f;
+    void Start() { Init(); }
+    void OnEnable() { Init(); }
 
-    void Update()
+    public void Init()
     {
-        lastMouse = Input.mousePosition - lastMouse;
-        lastMouse = new Vector3(-lastMouse.y * camSens, lastMouse.x * camSens, 0);
-        lastMouse = new Vector3(transform.eulerAngles.x + lastMouse.x, transform.eulerAngles.y + lastMouse.y, 0);
-        transform.eulerAngles = lastMouse;
-        lastMouse = Input.mousePosition;
-        //Mouse  camera angle done.  
-
-        //Keyboard commands
-        float f = 0.0f;
-        Vector3 p = GetBaseInput();
-        if (Input.GetKey(KeyCode.LeftShift))
+        //If there is no target, create a temporary target at 'distance' from the cameras current viewpoint
+        if (!target)
         {
-            totalRun += Time.deltaTime;
-            p = p * totalRun * shiftAdd;
-            p.x = Mathf.Clamp(p.x, -maxShift, maxShift);
-            p.y = Mathf.Clamp(p.y, -maxShift, maxShift);
-            p.z = Mathf.Clamp(p.z, -maxShift, maxShift);
-        }
-        else
-        {
-            totalRun = Mathf.Clamp(totalRun * 0.5f, 1f, 1000f);
-            p = p * mainSpeed;
+            GameObject go = new GameObject("Cam Target");
+            go.transform.position = transform.position + (transform.forward * distance);
+            target = go.transform;
         }
 
-        p = p * Time.deltaTime;
-        Vector3 newPosition = transform.position;
-        if (Input.GetKey(KeyCode.Space))
-        { //If player wants to move on X and Z axis only
-            transform.Translate(p);
-            newPosition.x = transform.position.x;
-            newPosition.z = transform.position.z;
-            transform.position = newPosition;
-        }
-        else
-        {
-            transform.Translate(p);
-        }
+        distance = Vector3.Distance(transform.position, target.position);
+        currentDistance = distance;
+        desiredDistance = distance;
 
+        //be sure to grab the current rotations as starting points.
+        position = transform.position;
+        rotation = transform.rotation;
+        currentRotation = transform.rotation;
+        desiredRotation = transform.rotation;
+
+        xDeg = Vector3.Angle(Vector3.right, transform.right);
+        yDeg = Vector3.Angle(Vector3.up, transform.up);
     }
 
-    private Vector3 GetBaseInput()
-    { //returns the basic values, if it's 0 than it's not active.
-        Vector3 p_Velocity = new Vector3();
-        if (Input.GetKey(KeyCode.W))
+    /*
+     * Camera logic on LateUpdate to only update after all character movement logic has been handled. 
+     */
+    void LateUpdate()
+    {
+        // If Control and Alt and Middle button? ZOOM!
+        if (Input.GetMouseButton(2) && Input.GetKey(KeyCode.LeftAlt))
         {
-            p_Velocity += new Vector3(0, 0, 1);
+            desiredDistance -= Input.GetAxis("Mouse Y") * Time.deltaTime * zoomRate * 0.125f * Mathf.Abs(desiredDistance);
         }
-        if (Input.GetKey(KeyCode.S))
+        // If middle mouse and left alt are selected? ORBIT
+        else if (Input.GetMouseButton(2))
         {
-            p_Velocity += new Vector3(0, 0, -1);
+            xDeg += Input.GetAxis("Mouse X") * xSpeed * 0.02f;
+            yDeg -= Input.GetAxis("Mouse Y") * ySpeed * 0.02f;
+
+            ////////OrbitAngle
+
+            //Clamp the vertical axis for the orbit
+            yDeg = ClampAngle(yDeg, yMinLimit, yMaxLimit);
+            // set camera rotation 
+            desiredRotation = Quaternion.Euler(yDeg, xDeg, 0);
+            currentRotation = transform.rotation;
+
+            rotation = Quaternion.Lerp(currentRotation, desiredRotation, Time.deltaTime * zoomDampening);
+            transform.rotation = rotation;
         }
-        if (Input.GetKey(KeyCode.A))
-        {
-            p_Velocity += new Vector3(-1, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            p_Velocity += new Vector3(1, 0, 0);
-        }
-        return p_Velocity;
+
+        ////////Orbit Position
+
+        // affect the desired Zoom distance if we roll the scrollwheel
+        desiredDistance -= Input.GetAxis("Mouse ScrollWheel") * Time.deltaTime * zoomRate * Mathf.Abs(desiredDistance);
+        //clamp the zoom min/max
+        desiredDistance = Mathf.Clamp(desiredDistance, minDistance, maxDistance);
+        // For smoothing of the zoom, lerp distance
+        currentDistance = Mathf.Lerp(currentDistance, desiredDistance, Time.deltaTime * zoomDampening);
+
+        // calculate position based on the new currentDistance 
+        position = target.position - (rotation * Vector3.forward * currentDistance + targetOffset);
+        transform.position = position;
+    }
+
+    private static float ClampAngle(float angle, float min, float max)
+    {
+        if (angle < -360)
+            angle += 360;
+        if (angle > 360)
+            angle -= 360;
+        return Mathf.Clamp(angle, min, max);
     }
 }

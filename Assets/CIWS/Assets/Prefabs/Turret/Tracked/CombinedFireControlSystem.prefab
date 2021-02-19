@@ -602,6 +602,16 @@ PrefabInstance:
       propertyPath: motionTwoRotationZ
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3329849670807593138, guid: d670b958036ee4b4f83490e22e15eff7,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3329849670807593138, guid: d670b958036ee4b4f83490e22e15eff7,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 7b031fb5816366e4d84b9a208c00b24f, type: 2}
     - target: {fileID: 4502804125136706525, guid: d670b958036ee4b4f83490e22e15eff7,
         type: 3}
       propertyPath: m_LocalScale.x
