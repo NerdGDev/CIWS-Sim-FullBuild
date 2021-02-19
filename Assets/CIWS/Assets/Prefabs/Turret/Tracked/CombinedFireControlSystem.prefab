@@ -62,6 +62,7 @@ MonoBehaviour:
   noTargetTimeToConfirm: 5
   confirmingKill: 0
   killConfirmed: 0
+  mr: {fileID: 6664753386851676980}
 --- !u!114 &5465503763584339725
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,7 +195,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 10000
-  field of view: 26.991467
+  field of view: 8
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -268,7 +269,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 10000
-  field of view: 60
+  field of view: 20
   orthographic: 0
   orthographic size: 5
   m_Depth: 0
@@ -662,6 +663,12 @@ Transform:
 --- !u!4 &6247618882670299806 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2666118897736227096, guid: d670b958036ee4b4f83490e22e15eff7,
+    type: 3}
+  m_PrefabInstance: {fileID: 8235946027879764870}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6664753386851676980 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 3329849670807593138, guid: d670b958036ee4b4f83490e22e15eff7,
     type: 3}
   m_PrefabInstance: {fileID: 8235946027879764870}
   m_PrefabAsset: {fileID: 0}

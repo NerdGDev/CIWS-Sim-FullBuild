@@ -17,9 +17,7 @@ public class FireControlSystem : MonoBehaviour
     public Commands waitingCommand;
 
     public CommandController cc;
-
     public TrackingRadarController trc;
-
     public WeaponSystemController wsc;
 
     public CIWSDataLink dl;
@@ -35,6 +33,8 @@ public class FireControlSystem : MonoBehaviour
     public bool confirmingKill = false;
     public bool killConfirmed = false;
 
+    public MeshRenderer mr;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -42,6 +42,20 @@ public class FireControlSystem : MonoBehaviour
         dl.receivedData += ReceivedData;
 
         status = Status.IDLE;
+
+        SceneMaster sm = FindObjectOfType<SceneMaster>();
+        sm.overlayModeUpdated += OverlayUpdated;
+    }
+
+    void OverlayUpdated(VisualiserMode visualiserMode) 
+    {
+        if (visualiserMode == VisualiserMode.NONE) {
+            mr.enabled = false;
+        }
+        if (visualiserMode == VisualiserMode.OVERLAY)
+        {
+            mr.enabled = true;
+        }
     }
 
     // Update is called once per frame
@@ -366,6 +380,26 @@ public class FireControlSystem : MonoBehaviour
         IDLE,
         WORKING,
         BUSY
+    }
+
+    public string GetStatusData() 
+    {
+        string statusData = "";
+        statusData += "Status: " + status.ToString() + "\n";
+        statusData += "Command: " + command.ToString() + "\n";
+        statusData += "\n";
+        statusData += "Tracking Alignment: " + trc.alignmentStatus.ToString() + "\n";
+        statusData += "Weapon Status: " + wsc.firingState.ToString() + "\n";
+        statusData += "\n";
+        statusData += "Ammo: " + wsc.ammoCount.ToString() + "\n";
+        statusData += "\n";
+        statusData += "Expected Range: " + (wsc.fs.timeToImpact * wsc.muzzleVelocity).ToString() + "\n";
+        statusData += "Fire Solution Impact Time: " + fs.timeToImpact.ToString() + "\n";        
+        statusData += "Status: " + status.ToString() + "\n";
+        statusData += "\n";
+
+
+        return statusData;
     }
 
 }

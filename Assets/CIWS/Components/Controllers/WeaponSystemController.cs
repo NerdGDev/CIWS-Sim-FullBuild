@@ -30,7 +30,7 @@ public class WeaponSystemController : MonoBehaviour
 
     
 
-    (Vector3 direction, float timeToImpact) fs = (Vector3.zero, 0f);
+    public (Vector3 direction, float timeToImpact) fs = (Vector3.zero, 0f);
 
     public enum FiringState
     {
@@ -58,6 +58,22 @@ public class WeaponSystemController : MonoBehaviour
             burstFireStart = false;
             StartCoroutine(Burst());
         }
+        if (firingState == FiringState.EMPTY || ammoCount <= 0) 
+        {
+            StartCoroutine(Reload());
+        }
+        
+    }
+
+    IEnumerator Reload() 
+    {
+        firingState = FiringState.RELOADING;
+        while (ammoCount < 600)
+        {
+            ammoCount++;
+            yield return new WaitForSeconds(0.005f);
+        }
+        firingState = FiringState.IDLE;
     }
 
     

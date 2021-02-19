@@ -6,8 +6,6 @@ public class CIWSDebugableObject : MonoBehaviour
 {
     SceneMaster sm;
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -30,7 +28,6 @@ public class CIWSDebugableObject : MonoBehaviour
     }
 
     void OverlayUpdated(VisualiserMode overlayMode) {
-        
     }
 
     void OnNoneVisualiser() {

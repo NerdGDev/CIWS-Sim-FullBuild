@@ -215,7 +215,7 @@ MonoBehaviour:
   width: 15000
   height: 20000
   elevation: -15
-  visualPrefab: {fileID: 0}
+  mr: {fileID: 6733638046693226263}
 --- !u!114 &771608348317236651
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -371,6 +371,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8fda3e6d4ff5c334eb504d8531f6b777, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  visualPrefab: {fileID: 0}
 --- !u!1 &5472038810740635742
 GameObject:
   m_ObjectHideFlags: 0
@@ -530,6 +531,12 @@ GameObject:
 --- !u!4 &5564651421395815544 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: cfbf7efbba6eeb946ad6bc6564fda5ca,
+    type: 3}
+  m_PrefabInstance: {fileID: 5382687217121946515}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &6733638046693226263 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: -7511558181221131132, guid: cfbf7efbba6eeb946ad6bc6564fda5ca,
     type: 3}
   m_PrefabInstance: {fileID: 5382687217121946515}
   m_PrefabAsset: {fileID: 0}

@@ -26,7 +26,7 @@ public class RadarBounceVisualiser : MonoBehaviour
         //Skips first tick for corrected rendering from origin
         if (skipStarTick) {
             skipStarTick = false;
-            step = Vector3.Distance(origin.position, target.position) * (Time.fixedDeltaTime * 25f);
+            step = Vector3.Distance(origin.position, target.position) * (Time.fixedDeltaTime * 5f);
             return;
         }
 

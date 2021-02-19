@@ -152,5 +152,18 @@ public class CommandController : MonoBehaviour
     public void UpdateIDPosition() {
     
     }
+
+    public string GetStatusData() 
+    {
+        string statusData = "";
+        statusData += "Connected Systems: " + FireControlSystems.Count.ToString() + "\n";
+        statusData += "\n";
+        statusData += "Targets: " + targetDictionary.Count.ToString() + "\n";
+        statusData += "Assigned: " + targetAssignment.Count.ToString() + "\n";
+
+
+        return statusData;
+    }
+
 }
 

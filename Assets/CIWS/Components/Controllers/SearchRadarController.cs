@@ -23,7 +23,8 @@ public class SearchRadarController : MonoBehaviour
     public float height;
     public float elevation;
 
-    
+    public MeshRenderer mr;
+
 
     private void OnValidate()
     {
@@ -47,6 +48,21 @@ public class SearchRadarController : MonoBehaviour
         dataLink.receivedData += ReceivedData;
 
         commandController.ConnectSearchRadar(this);
+
+        SceneMaster sm = FindObjectOfType<SceneMaster>();
+        sm.overlayModeUpdated += OverlayUpdated;
+    }
+
+    void OverlayUpdated(VisualiserMode visualiserMode)
+    {
+        if (visualiserMode == VisualiserMode.NONE)
+        {
+            mr.enabled = false;
+        }
+        if (visualiserMode == VisualiserMode.OVERLAY)
+        {
+            mr.enabled = true;
+        }
     }
 
     // Update is called once per frame

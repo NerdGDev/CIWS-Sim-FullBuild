@@ -14,6 +14,7 @@ public class MissileBasic : MonoBehaviour
     {
         signal = gameObject.GetInstanceID();
         rb = GetComponent<Rigidbody>();
+        Destroy(this.gameObject, 30f);
     }
 
     // Update is called once per frame

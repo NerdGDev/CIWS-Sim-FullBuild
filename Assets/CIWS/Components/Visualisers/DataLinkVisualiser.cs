@@ -11,7 +11,7 @@ public class DataLinkVisualiser : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        step = 1f;
+        step = 300f;
     }
 
     // Update is called once per frame
