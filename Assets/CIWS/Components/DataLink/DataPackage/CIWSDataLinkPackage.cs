@@ -6,7 +6,8 @@ public enum PackageContent{
     BASIC,
     DETECTION,
     COMMAND,
-    STATUS
+    STATUS,
+    KILL
 }
 
 public class CIWSDataLinkPackage {

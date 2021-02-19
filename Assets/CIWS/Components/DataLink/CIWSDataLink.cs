@@ -54,7 +54,7 @@ public class CIWSDataLink : MonoBehaviour
     private void ConnectDataLinks() {
         connectedDataLinks.ForEach(delegate (CIWSDataLink externalDataLink)
         {
-            Debug.Log("Connecting");
+            //Debug.Log("Connecting");
             externalDataLink.dataLinkTransmit -= ReceiveDataLink;
             externalDataLink.dataLinkTransmit += ReceiveDataLink;
         });

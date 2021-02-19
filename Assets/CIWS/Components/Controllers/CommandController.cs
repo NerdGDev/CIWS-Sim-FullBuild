@@ -52,45 +52,42 @@ public class CommandController : MonoBehaviour
 
     void UpdateTargetAssignments() 
     {
-        foreach (var item in targetDictionary)
+        FireControlSystems.ForEach(delegate (FireControlSystem fcs) 
         {
-            if (!targetAssignment.ContainsKey(item.Key)) {
-                FireControlSystem optimalFCS = null;
-
-                FireControlSystems.ForEach(delegate (FireControlSystem fcs)
+            if (fcs.status == FireControlSystem.Status.IDLE) 
+            {
+                int? optimalTargetSig = null;
+                foreach (var item in targetDictionary)
                 {
-                    if (fcs.status == FireControlSystem.Status.IDLE) 
+                    
+                    if (!targetAssignment.ContainsKey(item.Key))
                     {
-                        if (optimalFCS != null)
+                        if (optimalTargetSig != null)
                         {
-                            float d = Vector3.Distance(fcs.transform.position, item.Value);
-                            if (d < Vector3.Distance(optimalFCS.transform.position, item.Value)) 
+                            if (Vector3.Distance(targetDictionary[(int)optimalTargetSig], fcs.transform.position) > Vector3.Distance(item.Value, fcs.transform.position))
                             {
-                                Debug.Log("New Optimal");
-                                optimalFCS = fcs;
+                                optimalTargetSig = item.Key;
                             }
-
                         }
-                        else 
+                        else
                         {
-                            optimalFCS = fcs;
+                            optimalTargetSig = item.Key;
                         }
-                        
-
                     }
-                });
-                if (optimalFCS != null) {
-                    targetAssignment.Add(item.Key, optimalFCS);
-                    SendTargetAssignment(optimalFCS, item.Key, item.Value);
                 }
-            }
-        }
+                if (optimalTargetSig != null) 
+                {
+                    targetAssignment.Add((int)optimalTargetSig, fcs);
+                    SendTargetAssignment(fcs, (int)optimalTargetSig, targetDictionary[(int)optimalTargetSig]);
+                }
+            }                
+        });        
     }
 
 
     void SendTargetAssignment(FireControlSystem fcs, int signatureID, Vector3 position) 
     {
-        Debug.Log("Send Target Assignment");
+        //Debug.Log("Send Target Assignment");
         DLPCommand package = new DLPCommand(FireControlSystem.Commands.ENGAGE, position, signatureID);
         dl.transmitData(package, fcs.gameObject.GetInstanceID());
     }
@@ -105,11 +102,14 @@ public class CommandController : MonoBehaviour
 
     public void ReceivedData(CIWSDataLinkPackage dataLinkPackage) 
     {
-        Debug.Log(dataLinkPackage.GetType().ToString());
+        //Debug.Log(dataLinkPackage.GetType().ToString());
 
         switch (dataLinkPackage.GetPackageContentType()) {
             case PackageContent.DETECTION:
                 HandleDetection((DLPDetection)dataLinkPackage);
+                break;
+            case PackageContent.KILL:
+                HandleKill((DLPKill)dataLinkPackage);
                 break;
             default:
                 break;
@@ -122,14 +122,21 @@ public class CommandController : MonoBehaviour
         var data = package.GetPackageData();
         if (targetDictionary.ContainsKey(data.signatureID))
         {
-            Debug.Log("Updating Target");
+            //Debug.Log("Updating Target");
             targetDictionary[data.signatureID] = data.position;
         }
         else
         {
-            Debug.Log("New Target");
+            //Debug.Log("New Target");
             targetDictionary.Add(data.signatureID, data.position);
         }
+    }
+
+    private void HandleKill(DLPKill package) 
+    {
+        int signature = package.GetPackageData();
+        targetDictionary.Remove(signature);
+        targetAssignment.Remove(signature);
     }
 
     public void ConnectSearchRadar(SearchRadarController searchRadarController)

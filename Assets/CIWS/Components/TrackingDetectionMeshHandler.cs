@@ -19,7 +19,7 @@ public class TrackingDetectionMeshHandler : MonoBehaviour
     {
         if (detectionEnterDelegate != null)
         {
-            detectionEnterDelegate(other.transform.GetInstanceID(), other.transform.position);
+            detectionEnterDelegate(other.gameObject.GetInstanceID(), other.transform.position);
         }
     }
 
@@ -27,7 +27,7 @@ public class TrackingDetectionMeshHandler : MonoBehaviour
     {
         if (detectionStayDelegate != null)
         {
-            detectionStayDelegate(other.transform.GetInstanceID(), other.transform.position);
+            detectionStayDelegate(other.gameObject.GetInstanceID(), other.transform.position);
         }
 
     }
@@ -36,7 +36,7 @@ public class TrackingDetectionMeshHandler : MonoBehaviour
     {
         if (detectionExitDelegate != null)
         {
-            detectionExitDelegate(other.transform.GetInstanceID(), other.transform.position);
+            detectionExitDelegate(other.gameObject.GetInstanceID(), other.transform.position);
         }
     }
 }

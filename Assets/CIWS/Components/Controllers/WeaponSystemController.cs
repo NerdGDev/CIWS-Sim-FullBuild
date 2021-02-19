@@ -12,11 +12,35 @@ public class WeaponSystemController : MonoBehaviour
     public TurretMotionBase tm;
 
     public Transform barrelComponent;
+    public Transform muzzle;
     public float muzzleVelocity = 1100f;
     public Transform projectile;
     //public CommandController commandController;
 
+    public float fireRate;
+    public bool canShoot = true;
+
     //TargetAssignment targetAssignment;
+    Coroutine burstCoroutine;
+    public FiringState firingState;
+    public int ammoCount;
+    public int burstSize;
+
+    public bool burstFireStart = false;
+
+    
+
+    (Vector3 direction, float timeToImpact) fs = (Vector3.zero, 0f);
+
+    public enum FiringState
+    {
+        IDLE,
+        FIRING,
+        CYCLING,
+        RELOADING,
+        EMPTY
+    }
+
 
 
     // Start is called before the first frame update
@@ -29,12 +53,50 @@ public class WeaponSystemController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (burstFireStart) 
+        {
+            burstFireStart = false;
+            StartCoroutine(Burst());
+        }
     }
+
+    
 
     private void FixedUpdate()
     {
         
+    }
+
+    public void StartBurst() 
+    {
+        //Debug.Log("Start Burst");
+        burstFireStart = true;
+        
+    }
+
+    IEnumerator Burst() 
+    {
+        //Debug.Log("Burst");
+        //Debug.Log(burstSize);
+        firingState = FiringState.FIRING;
+        for (int i = 0; i < burstSize; i++) 
+        {
+            //Debug.Log("Fire : " + i);
+            //StartCoroutine(BurstShot());
+            Fire();
+            yield return new WaitForSeconds(fireRate);
+            //yield return StartCoroutine(Burst(burstSize));
+        }
+        firingState = FiringState.CYCLING;
+        yield return new WaitForSeconds(1f + fs.timeToImpact);
+        firingState = FiringState.IDLE;
+
+    }
+
+    IEnumerator BurstShot() 
+    {
+        Fire();
+        yield return new WaitForSeconds(1 / fireRate);
     }
 
     public bool AimTo(Vector3 target) 
@@ -43,11 +105,11 @@ public class WeaponSystemController : MonoBehaviour
             return false;
         }
         tm.SetTargetDirection(target);
-        Debug.Log(Quaternion.Angle(tm.GetRotation(), Quaternion.LookRotation(target)));
-        if (Quaternion.Angle(tm.GetRotation(), Quaternion.LookRotation(target)) <= 0.1f) 
+        //Debug.Log(Quaternion.Angle(tm.GetRotation(), Quaternion.LookRotation(target)));
+        if (Quaternion.Angle(tm.GetRotation(), Quaternion.LookRotation(target)) <= 0.5f) 
         {
             
-            Debug.Log("Can Fire");
+            //Debug.Log("Can Fire");
             return true;
         }
 
@@ -55,12 +117,26 @@ public class WeaponSystemController : MonoBehaviour
         return false;
     }
 
-    public void Fire(Vector3 direction, float timeToImpact) 
+    public void UpdateFireSolution((Vector3 direction, float timeToImpact) fs) 
     {
-        Transform bullet = Instantiate(projectile, barrelComponent.position, barrelComponent.rotation);
-        bullet.GetComponent<ProjectileBasic>().Setup((Quaternion.LookRotation(GetPointOnUnitSphereCap(barrelComponent.rotation, 0.00025f)) * Vector3.forward) * 100f, timeToImpact);
-        Debug.Log("Fire");
-        Debug.DrawLine(transform.position, transform.position + (direction.normalized * muzzleVelocity * (timeToImpact + 0.5f)), Color.magenta);
+        this.fs = fs;
+    }
+
+    public void Fire() 
+    {
+        //Debug.Log("Fire");
+        if (ammoCount <= 0) 
+        {
+            //Debug.Log("Empty");
+            firingState = FiringState.EMPTY;
+            StopCoroutine(burstCoroutine);
+            return;
+        }   
+        ammoCount--;
+        Transform bullet = Instantiate(projectile, muzzle.position, muzzle.rotation);
+        bullet.GetComponent<ProjectileBasic>().Setup((Quaternion.LookRotation(GetPointOnUnitSphereCap(muzzle.rotation, 0.00025f)) * Vector3.forward) * 100f, fs.timeToImpact);
+        //Debug.Log("Fire");
+        Debug.DrawLine(muzzle.position, muzzle.position + (fs.direction.normalized * muzzleVelocity * (fs.timeToImpact)), Color.magenta);
     }
 
     public static Vector3 GetPointOnUnitSphereCap(Quaternion targetDirection, float angle)

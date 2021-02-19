@@ -17,20 +17,20 @@ public class DetectionMeshHandler : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-
+        if (detectionEnterDelegate != null)
+        {
+            detectionEnterDelegate(other.gameObject.GetInstanceID(), other.transform.position);
+        }
         GameObject visualiser = Instantiate(visualPrefab, transform.position, transform.rotation);
         visualiser.GetComponent<RadarBounceVisualiser>().origin = transform;
         visualiser.GetComponent<RadarBounceVisualiser>().target = other.transform;
-        if (detectionEnterDelegate != null)
-        {
-            detectionEnterDelegate(other.transform.GetInstanceID(), other.transform.position);
-        }
+        
     }
 
     private void OnTriggerStay(Collider other)
     {
         if (detectionStayDelegate != null) {
-            detectionStayDelegate(other.transform.GetInstanceID(), other.transform.position);
+            detectionStayDelegate(other.gameObject.GetInstanceID(), other.transform.position);
         }
         
     }
@@ -39,7 +39,7 @@ public class DetectionMeshHandler : MonoBehaviour
     {
         if (detectionExitDelegate != null)
         {
-            detectionExitDelegate(other.transform.GetInstanceID(), other.transform.position);
+            detectionExitDelegate(other.gameObject.GetInstanceID(), other.transform.position);
         }
     }
 }
