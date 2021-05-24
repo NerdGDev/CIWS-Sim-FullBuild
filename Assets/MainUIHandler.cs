@@ -123,6 +123,22 @@ public class MainUIHandler : MonoBehaviour
             }
         }
 
+        foreach (MissileLauncher cc in FindObjectsOfType<MissileLauncher>())
+        {
+            if (IconManager.ContainsKey(cc.gameObject))
+            {
+                UpdateIcon(IconManager[cc.gameObject], cc.gameObject);
+            }
+            else
+            {
+                GameObject go = Instantiate(IconObject, canvas.transform);
+                go.GetComponentInChildren<Text>().text = "Launcher";
+                go.GetComponentInChildren<Text>().color = Color.yellow;
+                IconManager.Add(cc.gameObject, go);
+                UpdateIcon(IconManager[cc.gameObject], cc.gameObject);
+            }
+        }
+
         foreach (Missile cc in FindObjectsOfType<Missile>())
         {
             if (IconManager.ContainsKey(cc.gameObject))
@@ -142,7 +158,7 @@ public class MainUIHandler : MonoBehaviour
         List<GameObject> DeadList = new List<GameObject>();
         foreach (GameObject item in IconManager.Keys)
         {
-            Debug.LogError(item);
+            //Debug.LogError(item);
             if (item == null)
             {
                 DeadList.Add(item);
@@ -163,7 +179,7 @@ public class MainUIHandler : MonoBehaviour
         yield return new WaitForFixedUpdate();
         while (true) 
         {
-            Debug.LogWarning(go);
+            //Debug.LogWarning(go);
             if(go == null) 
             {
                 if (IconManager.ContainsKey(go)) 
@@ -175,7 +191,7 @@ public class MainUIHandler : MonoBehaviour
             }
             yield return new WaitForFixedUpdate();
         }
-        Destroy(icon);
+        Destroy(icon,3f);
     }
 
     void UpdateIcon(GameObject icon, GameObject target) 

@@ -14,13 +14,11 @@ public class Motion : MonoBehaviour
 
     [SerializeField] public RotationData[] rotations;
 
-
     [Header("Debug")]
-#if UNITY_EDITOR
     public bool DebugAngles;
     public bool UseTransform;
     public Transform TransformTarget;
-#endif
+
     private void Awake()
     {
         for (int x = 0; x < rotations.Length; x++)

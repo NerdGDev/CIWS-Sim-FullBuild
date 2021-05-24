@@ -21,6 +21,8 @@ public class SearchRadarController : Systembase
 
     LineRenderer lr;
 
+    bool HasHit;
+
     private void OnValidate()
     {
         radarCollider.transform.localRotation = Quaternion.Euler(elevation, 0, 0);
@@ -30,6 +32,7 @@ public class SearchRadarController : Systembase
     private void Awake()
     {
         lr = GetComponent<LineRenderer>();
+        lr.SetPosition(0, transform.position);
         visualise = GetComponent<Visualise>();
         motion = GetComponent<Motion>();
         dataLink = GetComponent<DataLink>();
@@ -40,12 +43,23 @@ public class SearchRadarController : Systembase
         visualise.AddDataField("Status", "Active");
         if (active)
             motion.targetDirection = Quaternion.AngleAxis(100 * Time.fixedDeltaTime, Vector3.up) * motion.targetDirection;
+        if (HasHit) 
+        {
+            lr.enabled = false;
+        }
+    }
+    private void LateUpdate()
+    {
+        HasHit = false;
     }
 
     public void ReportHit(int signature, Vector3 position) 
     {
         SendHit(signature, position);
         visualise.AddShortData("Detected", "Distance :" + Vector3.Distance(transform.position, position).ToString());
+        HasHit = true;
+        lr.enabled = true;
+        lr.SetPosition(1, position);
     }
 
     void SendHit(int signature, Vector3 position) 

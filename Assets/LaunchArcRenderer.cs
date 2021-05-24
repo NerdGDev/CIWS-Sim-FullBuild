@@ -24,6 +24,7 @@ public class LaunchArcRenderer : MonoBehaviour
     private void Awake()
     {
         //lr = GetComponent<LineRenderer>();
+        SetRender(false);
         g = Mathf.Abs(Physics.gravity.y);
 
     }
@@ -49,8 +50,10 @@ public class LaunchArcRenderer : MonoBehaviour
 
     public void Capture() 
     {
+        SetRender(true);
         GameObject go = Instantiate(lr.gameObject, lr.transform.position, lr.transform.rotation);
         Destroy(go, 10f);
+        SetRender(false);
     }
 
     //initialization

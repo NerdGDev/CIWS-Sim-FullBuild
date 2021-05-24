@@ -12,6 +12,8 @@ public class CommandController : Systembase
     public Dictionary<int, TargetState> TargetReports = new Dictionary<int, TargetState>();
     public Dictionary<int, DataLink> TargetAssignment = new Dictionary<int, DataLink>();
 
+    int assigned = 0;
+
     private void Awake()
     {
         visualise = GetComponent<Visualise>();
@@ -21,7 +23,9 @@ public class CommandController : Systembase
 
     private void FixedUpdate()
     {
-        
+        visualise.AddDataField("Talking To", dataLink.Connections.Count.ToString());
+        visualise.AddDataField("Monitoring", TargetReports.Count.ToString() + " Threats");
+        visualise.AddDataField("Assigned to CIWS", TargetAssignment.Count.ToString());
     }
 
     IEnumerator ComputeCycle() 
@@ -58,6 +62,7 @@ public class CommandController : Systembase
         {
             //Debug.Log("Assigning Target");
             visualise.AddShortData("Action", "Sending Target Order");
+            assigned++;
             ts.assigned = true;
             optimal.EngageTarget(ref ts);
         }
@@ -82,6 +87,7 @@ public class CommandController : Systembase
         visualise.AddShortData("Action", "Recieved Report");
         if (dead) 
         {
+            assigned--;
             visualise.AddShortData("Action", "Kill Confirmed");
             Debug.LogError("Kill Confirmed");
             TargetReports.Remove(signature);

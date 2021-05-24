@@ -20,7 +20,7 @@ public class DataLink : MonoBehaviour
     [SerializeField] public float range = 1000f;
     [SerializeField] public Vector3 position;
 
-    [SerializeField] List<DataLink> Connections = new List<DataLink>();
+    [SerializeField] public List<DataLink> Connections = new List<DataLink>();
 
     public GameObject DataLinkFX;
     public Dictionary<DataLink, bool> FXLine = new Dictionary<DataLink, bool>();

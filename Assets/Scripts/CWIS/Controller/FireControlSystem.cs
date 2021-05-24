@@ -27,6 +27,7 @@ public class FireControlSystem : Systembase, IDataLink
 
     private void Awake()
     {
+        lr = GetComponent<LineRenderer>();
         visualise = GetComponent<Visualise>();
         fixedSecondDivide = 1f / Time.fixedDeltaTime;
         dataLink = GetComponent<DataLink>();
@@ -42,6 +43,16 @@ public class FireControlSystem : Systembase, IDataLink
 
         visualise.AddDataField("Burst Count", turretController.burst.ToString());
 
+        if (assigned)
+        {
+            lr.SetPosition(0, transform.position);
+            lr.SetPosition(1, transform.position + fs.direction);
+            lr.enabled = true;
+        }
+        else 
+        {
+            lr.enabled = false;
+        }
 
 
     }
