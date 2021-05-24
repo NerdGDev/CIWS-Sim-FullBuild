@@ -32,6 +32,35 @@ public class MapGenerator : MonoBehaviour
 
     MapChunk[,] mapChunks;
 
+    private void Start()
+    {
+        
+    }
+
+    private void Awake()
+    {
+        if (terrainData != null)
+        {
+            terrainData.OnValuesUpdated -= OnValuesUpdated;
+            terrainData.OnValuesUpdated += OnValuesUpdated;
+            terrainData.NotifyOfUpdatedValues();
+        }
+
+        if (noiseData != null)
+        {
+            noiseData.OnValuesUpdated -= OnValuesUpdated;
+            noiseData.OnValuesUpdated += OnValuesUpdated;
+            noiseData.NotifyOfUpdatedValues();
+        }
+
+        if (textureData != null)
+        {
+            textureData.OnValuesUpdated -= OnTextureValuesUpdated;
+            textureData.OnValuesUpdated += OnTextureValuesUpdated;
+            textureData.NotifyOfUpdatedValues();
+        }
+    }
+
     void OnValuesUpdated()
     {
         if (!Application.isPlaying)
