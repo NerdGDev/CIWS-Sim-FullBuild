@@ -13,14 +13,14 @@ TagManager:
   - UI
   - 
   - 
-  - CIWS-NonInteractive
-  - CIWS-Interactive
-  - CIWS-System
-  - CIWS-Projectile
-  - CIWS-Radar
-  - CIWS-Sensors
-  - CIWS-Emissions
+  - CWIS-Radar
   - CIWS-Missile
+  - CIWS-Projectile
+  - 
+  - 
+  - 
+  - 
+  - 
   - 
   - 
   - 
